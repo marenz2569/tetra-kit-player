@@ -20,7 +20,7 @@ export default () => {
             <Layout className="App">
                 <Header>
                     <Row align="middle">
-                        <Col flex="30px">
+                        <Col flex="30px" style={{ display: "flex" }}>
                             <img className="logo" src={logo} />
                         </Col>
                         <Col flex="auto">

@@ -1,4 +1,4 @@
-### Tetra Kit Player
+# Tetra Kit Player
 
 TKP is web application that streams files and events produced by [tetra-kit](https://gitlab.com/larryth/tetra-kit/). 
 
@@ -9,4 +9,13 @@ TKP also features a live CMCE indicator (top right).
 <img src="sscreen3.png" width="500">
 
 - Start `decoder` and `recorder -a` from tetra-kit
-- Edit `.env` and start the project using: `npm i; npm run start`
+- Start the server with `yarn start`
+
+## Environment variables for yarn
+
+Environment variables | description
+----------------------|------------
+TETRA\_KIT\_LOG\_PATH | Filepath where the log of recoder is saved to
+TETRA\_KIT\_RAW\_PATH | Filepath of directory where processed data is saved
+SERVER\_PORT          | Port of the server facing the user
+PARCEL\_PORT          | Port of the backend server
