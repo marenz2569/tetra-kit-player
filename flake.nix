@@ -29,13 +29,12 @@
 
                   services.tetra-kit-player = {
                     enable = true;
-                    hosts = [
-                      {
-                        name = "test";
+                    instances = {
+                      "test" = {
                         tetraKitLogPath = "/tmp";
                         tetraKitRawPath = "/tmp";
-                      }
-                    ];
+                      };
+                    };
                   };
                 };
               };
