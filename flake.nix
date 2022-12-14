@@ -45,6 +45,7 @@
                 server.wait_for_unit("tetra-kit-player-test.service")
                 time.sleep(5)
                 server.succeed("${pkgs.wget}/bin/wget http://localhost:10000")
+                server.succeed("systemctl restart tetra-kit-player-test.service")
               '';
             } {
               inherit pkgs;

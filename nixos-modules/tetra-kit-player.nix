@@ -88,6 +88,7 @@ in {
 
         script = ''
           rm -rf * || true
+          rm -rf .parcelrc || true
 
           ln -s ${pkgs.tetra-kit-player}/bin bin
           ln -s ${pkgs.tetra-kit-player}/node_modules node_modules
