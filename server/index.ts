@@ -7,14 +7,10 @@ import LogEmitter from './LogEmitter';
 import waitForFile from './waitForFile';
 import createServer from './createServer';
 
-import decoder from './decoder';
-
 import {
     tetraKitRawPath,
     rawExtension,
-    undecodedExtention,
     webAudioPathPrefix,
-    processedExtension,
     tetraKitLogPath,
     minimumFilesSize,
 } from './settings';
@@ -27,9 +23,6 @@ if (!fs.existsSync(tetraKitRawPath)) {
 createServer(async (app, io) => {
 
     const history = new History();
-
-    // FIXME: renamed is fired on append also so we need to keep a hash of known files
-    const processedFiles: KeyValue = {}; 
 
     const broadcastMessage = (message: string): void => {
         io.emit('message', message);
@@ -52,29 +45,17 @@ createServer(async (app, io) => {
     }
 
     fs.watch(tetraKitRawPath, async (eventType, fileName) => {
-        const unprocessedFilePath = path.join(tetraKitRawPath, fileName);
+        const filePath = path.join(tetraKitRawPath, fileName);
         if (
             eventType === 'rename' &&
-            !processedFiles[fileName] &&
-            (fileName.endsWith(rawExtension) || fileName.endsWith(undecodedExtention)) &&
-            fs.existsSync(unprocessedFilePath)
+            fileName.endsWith(rawExtension) &&
+            fs.existsSync(filePath)
         ) {
-            processedFiles[fileName] = true;
-            const processedFilePath = unprocessedFilePath + processedExtension;
-            const recordingURL = `${webAudioPathPrefix}/${fileName}${processedExtension}`;
+            const recordingURL = `${webAudioPathPrefix}/${fileName}`;
 
             broadcastMessage('New file detected: ' + fileName);
 
-            const fileStat = await waitForFile(unprocessedFilePath);
-
-
-            if (fileName.endsWith(rawExtension)) {
-                fs.renameSync(unprocessedFilePath, processedFilePath);
-            }
-            if (fileName.endsWith(undecodedExtention)) {
-                await decoder(unprocessedFilePath, processedExtension);
-                fs.unlinkSync(unprocessedFilePath);
-            }
+            const fileStat = await waitForFile(filePath);
 
             if(fileStat.size < minimumFilesSize) {
                 broadcastMessage('Size too small skipping: ' + fileName);
@@ -91,7 +72,6 @@ createServer(async (app, io) => {
 
             broadcastMessage('Sending:  ' + fileName);
             io.emit('newRecording', newRecording);
-            delete processedFiles[fileName];
         }
     });
 });

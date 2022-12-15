@@ -5,35 +5,18 @@ import {
     tetraKitRawPath,
     rawExtension,
     webAudioPathPrefix,
-    processedExtension,
     minimumFilesSize,
     maxHistoryItems,
-    undecodedExtention
 } from './settings';
-
-import decoder from './decoder';
 
 export default class {
     private history: SimpleRecording[] = [];
 
     getHistory = () => this.history;
 
-    processUndecodedFiles = async () => {
-        await Promise.all(
-        fs.readdirSync(tetraKitRawPath)
-            .filter(fileName => fileName.endsWith(undecodedExtention))
-            .map(async (fileName) => {
-                const fullPath = path.join(tetraKitRawPath, fileName);
-                await decoder(fullPath, processedExtension);
-                fs.unlinkSync(fullPath);
-            })
-        );
-    }
-
     init = async () => {
-        await this.processUndecodedFiles();
         fs.readdirSync(tetraKitRawPath)
-            .filter(fileName => (fileName.endsWith(rawExtension) || fileName.endsWith(processedExtension)))
+            .filter(fileName => (fileName.endsWith(rawExtension)))
             .map(fileName => {
                 const stat = fs.statSync(path.join(tetraKitRawPath, fileName));
                 return <SimpleRecording>{

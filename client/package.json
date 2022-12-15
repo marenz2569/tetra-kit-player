@@ -1,0 +1,32 @@
+{
+ "name": "tetra-kit-player-client",
+ "version": "1.0.0",
+ "description": "",
+ "browserslist": [
+  "defaults and supports es6-module",
+  "maintained node versions"
+ ],
+ "scripts": {
+  "start": "yarn parcel index.html",
+  "build": "yarn parcel build --no-scope-hoist index.html"
+ },
+ "author": "",
+ "license": "ISC",
+ "dependencies": {
+  "antd": "*",
+  "p-queue": "^6.0.0",
+  "parcel": "2.8.1",
+  "react": "*",
+  "react-dom": "*",
+  "socket.io-client": "*",
+  "wavesurfer.js": "*",
+  "zustand": "*",
+	"buffer": "*"
+ },
+ "devDependencies": {
+  "@parcel/packager-raw-url": "2.8.1",
+  "@parcel/transformer-webmanifest": "2.8.1",
+  "buffer": "^5.5.0",
+  "process": "^0.11.10"
+ }
+}

@@ -3,8 +3,8 @@ export const webAudioPathPrefix = '/audio';
 export const tetraKitLogPath = process.env.TETRA_KIT_LOG_PATH || '';
 export const tetraKitRawPath = process.env.TETRA_KIT_RAW_PATH || '';
 export const rawExtension = '.raw';
-export const processedExtension = '.done';
-export const undecodedExtention = '.out';
+
+export const frontendPath = process.env.FRONTEND_PATH || '';
 
 export const serverPort = process.env.SERVER_PORT;
 export const parcelPort = process.env.PARCEL_PORT;

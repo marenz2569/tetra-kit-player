@@ -11,28 +11,34 @@ import {
     webAudioPathPrefix,
     isDev,
     serverPort,
-		parcelPort,
+    parcelPort,
+    frontendPath,
 } from './settings';
 
 export default async (serverReadyCallback: (app: express.Express, io: SocketIOServer) => void): Promise<void> => {
     const app = express();
 
-    const bundler = new Parcel({
-			  entries: './client/index.html',
-        mode: isDev ? 'development' : 'production',
-				serveOptions: {
-					port: Number(parcelPort)
-				}
-    });
-
-		await bundler.watch();
-
     app.use(webAudioPathPrefix, express.static(tetraKitRawPath));
-		const parcelMiddleware = createProxyMiddleware({
-			  target: `http://localhost:${parcelPort}/`,
-		});
 
-		app.use('/', parcelMiddleware);
+    if (frontendPath === '') {
+        const bundler = new Parcel({
+            entries: './client/index.html',
+            mode: isDev ? 'development' : 'production',
+            serveOptions: {
+                port: Number(parcelPort)
+            }
+    	  });
+    
+    	  await bundler.watch();
+    
+    	  const parcelMiddleware = createProxyMiddleware({
+            target: `http://localhost:${parcelPort}/`,
+    	  });
+    
+    	  app.use('/', parcelMiddleware);
+    } else {
+        app.use('/', express.static(frontendPath));
+    }
 
     let httpServer: http.Server;
 
